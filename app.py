@@ -17,16 +17,16 @@ rows: list[tuple[str, int]] = res.fetchall()
 # dummy
 if not rows:
     streamlit.warning("dummy data")
-    rows = [("a", 1), ("b", 2), ("c", 3)][:limit]
+    rows = [(chr(97 + i), i) for i in range(26)][:limit]
 
 streamlit.write("## fetched table")
 streamlit.dataframe(rows, use_container_width=True)
 
 streamlit.write("## data editor")
-updated_rows = streamlit.experimental_data_editor(
-    rows, num_rows="dynamic", use_container_width=True
-)
-streamlit.write(updated_rows)
+updated_rows = streamlit.experimental_data_editor(rows, use_container_width=True)
+
+streamlit.write("## line chart")
+streamlit.line_chart([y for _, y in updated_rows])
 
 # update
 if streamlit.button("Update"):
